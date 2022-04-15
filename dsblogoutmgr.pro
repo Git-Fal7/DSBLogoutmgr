@@ -11,8 +11,7 @@ isEmpty(DATADIR) {
 QT	    += widgets
 TEMPLATE     = app
 TARGET	     = $${PROGRAM}
-TRANSLATIONS = locale/$${PROGRAM}_de.ts \
-               locale/$${PROGRAM}_fr.ts
+
 PATH_LOCK    = .$${PROGRAM}.lock
 INCLUDEPATH += . lib
 DEFINES     += PROGRAM=\\\"$${PROGRAM}\\\" LOCALE_PATH=\\\"$${DATADIR}\\\"
@@ -25,8 +24,6 @@ HEADERS	    += lib/config.h \
 	       src/bgwin.h \
 	       src/icons.h \
 	       src/mainwin.h \
-	       src/timerwin.h \
-	       src/countdown.h \
 	       src/delay.h \
 	       lib/dsbcfg/dsbcfg.h \
 	       lib/qt-helper/qt-helper.h
@@ -34,8 +31,6 @@ SOURCES	    += lib/config.c \
 	       src/bgwin.cpp \
 	       src/main.cpp \
 	       src/mainwin.cpp \
-	       src/countdown.cpp \
-	       src/timerwin.cpp \
 	       src/delay.cpp \
 	       lib/dsbcfg/dsbcfg.c \
 	       lib/qt-helper/qt-helper.cpp
@@ -61,10 +56,6 @@ man.path  = $${PREFIX}/man/man1
 man.files = $${PROGRAM}.1
 
 qtPrepareTool(LRELEASE, lrelease)
-for(a, TRANSLATIONS) {
-	cmd = $$LRELEASE $${a}
-	system($$cmd)
-}
 locales.files	 += locale/*.qm
 cleanqm.commands  = rm -f $${locales.files}
 distclean.depends = cleanqm
