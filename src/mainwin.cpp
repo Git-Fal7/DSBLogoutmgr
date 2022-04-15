@@ -25,22 +25,19 @@
 #include <QDesktopWidget>
 #include <QWindow>
 #include <QScreen>
-#include "icons.h"
 #include "mainwin.h"
 #include "bgwin.h"
 #include "qt-helper/qt-helper.h"
-#include "delay.h"
 
-#define DELAY	 10
 #define PB_STYLE "padding: 2px; text-align: left;"
 
 Mainwin::Mainwin(QWidget *parent) : QDialog(parent)
 {
-	icon_logout		 = qh_loadIcon(ICONS_LOGOUT);
-	icon_shutdown		 = qh_loadIcon(ICONS_SHUTDOWN);
-	icon_suspend		 = qh_loadIcon(ICONS_SUSPEND);
-	icon_reboot   		 = qh_loadIcon(ICONS_REBOOT);
-	icon_lock     		 = qh_loadIcon(ICONS_LOCK);
+	icon_logout		 = qh_loadIcon("system-log-out");
+	icon_shutdown		 = qh_loadIcon("system-shutdown");
+	icon_suspend		 = qh_loadIcon("system-suspend");
+	icon_reboot   		 = qh_loadIcon("system-reboot");
+	icon_lock     		 = qh_loadIcon("system-lock-screen");
 	QIcon icon_cancel 	 = qh_loadStockIcon(
 					QStyle::SP_DialogCancelButton, NULL);
 	QVBoxLayout *vbox	 = new QVBoxLayout;
@@ -62,9 +59,9 @@ Mainwin::Mainwin(QWidget *parent) : QDialog(parent)
 	pb_suspend->setStyleSheet(PB_STYLE);
 	pb_lock->setStyleSheet(PB_STYLE);
 
-	vbox->addWidget(pb_logout);
-	vbox->addWidget(pb_reboot);
 	vbox->addWidget(pb_shutdown);
+	vbox->addWidget(pb_reboot);
+	vbox->addWidget(pb_logout);
 	vbox->addWidget(pb_suspend);
 	vbox->addWidget(pb_lock);
 	vbox->addWidget(pb_cancel);
@@ -89,51 +86,32 @@ Mainwin::Mainwin(QWidget *parent) : QDialog(parent)
 
 void Mainwin::logoutClicked()
 {
-	Delay d(DELAY, tr("Logout"), tr("Logging out in"), icon_logout, this);
-	if (d.exec() == QDialog::Accepted) {
 		button = LOGOUT;
 		accept();
-	}
 }
 
 void Mainwin::rebootClicked()
 {
-	Delay d(DELAY, tr("Reboot system"), tr("Rebooting in"), icon_reboot,
-	    this);
-	if (d.exec() == QDialog::Accepted) {
 		button = REBOOT;
 		accept();
-	}
 }
 
 void Mainwin::shutdownClicked()
 {
-	Delay d(DELAY, tr("Shutdown system"), tr("Shutting down in"),
-	    icon_shutdown, this);
-	if (d.exec() == QDialog::Accepted) {
 		button = SHUTDOWN;
 		accept();
-	}
 }
 
 void Mainwin::suspendClicked()
 {
-	Delay d(DELAY, tr("Suspend system"), tr("Suspending system in"),
-	    icon_suspend, this);
-	if (d.exec() == QDialog::Accepted) {
 		button = SUSPEND;
 		accept();
-	}
 }
 
 void Mainwin::lockClicked()
 {
-	Delay d(DELAY, tr("Lock screen"), tr("Locking screen in"), icon_lock,
-	    this);
-	if (d.exec() == QDialog::Accepted) {
 		button = LOCK;
 		accept();
-	}
 }
 
 int Mainwin::getButton()

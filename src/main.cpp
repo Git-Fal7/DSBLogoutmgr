@@ -1,4 +1,4 @@
-/*-
+/*
  * Copyright (c) 2017 Marcel Kaiser. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@
 #include "qt-helper/qt-helper.h"
 #include "config.h"
 
-#define PATH_FIFO "." PROGRAM ".fifo"
+#define PATH_FIFO "." "qLogout" ".fifo"
 
 static void usage(void);
 static void execmd(const char *cmd);
@@ -58,17 +58,11 @@ main(int argc, char *argv[])
 	struct passwd *pw;
 
 	QApplication app(argc, argv);
-	QTranslator translator;
 
-	if (translator.load(QLocale(), QLatin1String(PROGRAM),
-	    QLatin1String("_"), QLatin1String(LOCALE_PATH)))
-		app.installTranslator(&translator);
+	QApplication::setApplicationName("qLogout");
+	(void)qputenv("RESOURCE_NAME", "qLogout");
 
-	/* Set application name and RESOURCE_NAME env to set WM_CLASS */
-	QApplication::setApplicationName(PROGRAM);
-	(void)qputenv("RESOURCE_NAME", PROGRAM);
-
-	cfg = dsbcfg_read(PROGRAM, "config", vardefs, CFG_NVARS);
+	cfg = dsbcfg_read("qLogout", "config", vardefs, CFG_NVARS);
 	if (cfg == NULL && errno == ENOENT) {
 		cfg = dsbcfg_new(NULL, vardefs, CFG_NVARS);
 		if (cfg == NULL)
@@ -185,8 +179,8 @@ usage()
 	(void)fprintf(stderr,
 	    "Usage: %s [-L <lock command>] [-S <suspend command>]\n" \
 	    "       %-*s [-l <logout command>] [-r <reboot command>]\n" \
-	    "       %-*s [-s <shutdown command>]\n", PROGRAM,
-	    (int)sizeof(PROGRAM) - 1, "", (int)sizeof(PROGRAM) - 1, "");
+	    "       %-*s [-s <shutdown command>]\n", "qLogout",
+	    (int)sizeof("qLogout") - 1, "", (int)sizeof("qLogout") - 1, "");
 	exit(EXIT_FAILURE);
 }
 
